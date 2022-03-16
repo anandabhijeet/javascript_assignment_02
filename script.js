@@ -7,6 +7,7 @@ const getData = async () => {
       return response.json();
     })
     .then((actualData) => {
+      data = actualData;
       console.log(actualData);
       displayData(actualData);
     })
@@ -16,7 +17,8 @@ const getData = async () => {
 };
 
 const displayData = (userData) => {
-  data = userData;
+  console.log(userData);
+
   displayDetails(data[0]);
 
   for (let i = 0; i < userData.length; i++) {
@@ -28,10 +30,17 @@ const displayData = (userData) => {
 
     let card = document.createElement("div");
     card.className = "card";
+    card.setAttribute("id", userData[i].id);
     card.addEventListener("click", function () {
       index = i;
       displayDetails(data[index]);
     });
+
+    let section1 = document.createElement("div");
+    section1.className = "section-1";
+
+    let section2 = document.createElement("div");
+    section2.className = "section-2";
 
     let fullname = document.createElement("div");
     fullname.className = "name";
@@ -46,7 +55,22 @@ const displayData = (userData) => {
     fullname.appendChild(firstName);
     fullname.appendChild(lastName);
 
-    card.appendChild(fullname);
+    section1.appendChild(fullname);
+    card.appendChild(section1);
+
+    let x = document.createElement("i");
+    x.className = "fa fa-trash-o";
+    x.id = "icon-id";
+    x.setAttribute("aria-hidden", "true");
+    x.addEventListener("click", function (e) {
+      let id = card.getAttribute("id");
+
+      deleteUser(id);
+    });
+
+    section2.appendChild(x);
+
+    card.appendChild(section2);
 
     let userDetails = document.createElement("div");
     userDetails.className = "user-details";
@@ -67,12 +91,10 @@ const displayData = (userData) => {
     userDetails.appendChild(employmentTitle);
     userDetails.appendChild(country);
 
-    card.appendChild(userDetails);
+    section1.appendChild(userDetails);
 
     document.getElementById("data-list").appendChild(card);
   }
-
-  console.log(data[index]);
 };
 
 const displayDetails = (userData) => {
@@ -97,7 +119,7 @@ const displayDetails = (userData) => {
   document.getElementById("gender").innerHTML = userData.gender;
   document.getElementById("phone-number").innerHTML = userData.phone_number;
   document.getElementById("social-insaurance-number").innerHTML =
-    userData.social_insaurance_number;
+    userData.social_insurance_number;
   document.getElementById("dob").innerHTML = userData.date_of_birth;
   document.getElementById("employment-title").innerHTML =
     userData.employment.title;
@@ -108,4 +130,39 @@ const displayDetails = (userData) => {
     userData.credit_card.cc_number;
   document.getElementById("subscription-plan").innerHTML =
     userData.subscription.plan;
+
+  if (document.documentElement.clientWidth <= 1400) {
+    scrollToDetails();
+  }
+};
+
+const scrollToDetails = () => {
+  let current_position = document.getElementById("details");
+  let newPostion = current_position.getBoundingClientRect();
+  console.log(newPostion);
+  window.scrollTo(0, newPostion.bottom);
+};
+
+const deleteUser = (id) => {
+  let text = `Are you sure you want to delete this user?`;
+  if (confirm(text) == true) {
+    // for (let i = 0; i < data.length; i++) {
+    //   if (data[i].id == id) {
+    //     alert(data[i].first_name + " Details Deleted");
+    //     data.splice(i, 1); 
+    //     console.log(data);
+    //   }
+    // }
+
+    // let newDataArray = data.filter(function(user){
+    //   return user.id != id
+    // })
+
+    // console.log(newDataArray);
+    document.getElementById(id).remove();
+
+    //  displayData(newDataArray);
+  } else {
+    alert("Operation Cancelled!");
+  }
 };
