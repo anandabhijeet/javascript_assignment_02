@@ -1,0 +1,1 @@
+# javascript_assignment_02 usin AJAX for fetching data from Api. Making to seperate fields for showing data. ![FireShot Capture 007 - Assignment 01 - 127 0 0 1](https://user-images.githubusercontent.com/46624621/158530170-22971fc0-99e3-425a-93f4-d619cb920f3d.png)
